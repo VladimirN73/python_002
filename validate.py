@@ -8,16 +8,12 @@ import zipfile
 
 def create_weights():
     #
+    zipFile = "voc.zip"
     zips = glob.glob('vox.zip.*')
-    zipFile = os.path.relpath("voc.zip")
-    for zipName in zips:
-        source = zipName
+    for source in zips:
         with open(zipFile, "ab") as f:
             with open(source, "rb") as z:
                 f.write(z.read())
-
-    with open(zipFile, "rb") as f:
-        print("OK")
 
     # this fix is not needed on Windows and does not work on unix ...
     fix_zip(zipFile)
