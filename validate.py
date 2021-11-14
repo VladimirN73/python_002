@@ -53,11 +53,30 @@ def delete_file(filename):
         os.remove(file_target)
 
 
-def run():
-    delete_file('voc.pth')
-    delete_file('voc.zip')
-    unzip_file()
+def splitt_file(filename, chunk_size):
+    file_number = 1
+    with open(filename, 'rb') as f:
+        chunk = f.read(chunk_size)
+        while chunk:
+            with open(filename + '.' + str(file_number), 'wb') as chunk_file:
+                chunk_file.write(chunk)
+            file_number += 1
+            chunk = f.read(chunk_size)
 
+
+def merge_files(pattern, target):
+    files = glob.glob(pattern)
+    with open(target, 'ab') as outfile:
+        for file in files:
+            with open(file, 'rb') as f:
+                outfile.write(f.read())
+
+def run():
+    #delete_file('voc.pth')
+    #delete_file('voc.zip')
+    #unzip_file()
+    splitt_file('voc.pth', 50_000_000)
+    #merge_files('voc.pth.*', 'voc.out')
 
 if __name__ == '__main__':
     run()
